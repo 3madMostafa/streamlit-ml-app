@@ -27,10 +27,6 @@ def train_and_log_model():
     if mlflow.active_run():
         mlflow.end_run()
 
-    # Set experiment name or create it if it doesn't exist
-    experiment_name = "Retail_Sales_Prediction"
-    mlflow.set_experiment(experiment_name)
-
     # Start a new MLflow run
     with mlflow.start_run() as run:
         # Train the XGBoost model
@@ -41,17 +37,21 @@ def train_and_log_model():
         predictions = model.predict(X_test)
         mse = mean_squared_error(y_test, predictions)
 
-        # Log model parameters, metrics, and the model itself
+        # Log model parameters, metrics, and the model itself (disable logging the model file)
         mlflow.log_param("n_estimators", 100)
         mlflow.log_metric("mse", mse)
-        mlflow.sklearn.log_model(model, "xgboost_model")
+
+        # Check if environment supports artifact logging
+        try:
+            mlflow.sklearn.log_model(model, "xgboost_model")
+        except PermissionError:
+            st.warning("Artifact logging is not supported in this environment. Skipping model artifact logging.")
 
         # Display metrics in Streamlit
         st.write(f"Model logged with MSE: {mse}")
         st.write(f"MLflow Run ID: {run.info.run_id}")
-        st.write(f"Experiment ID: {run.info.experiment_id}")
 
         # Provide a link to the MLflow run in the Streamlit UI
-        st.markdown(f"[View Run in MLflow](http://127.0.0.1:5000/#/experiments/{run.info.experiment_id}/runs/{run.info.run_id})")
+        st.markdown(f"[View Run in MLflow](http://127.0.0.1:5000/#/experiments/0/runs/{run.info.run_id})")
 
     st.success("Model training and logging completed.")
