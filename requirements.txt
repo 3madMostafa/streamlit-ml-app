@@ -5,3 +5,4 @@ xgboost
 mlflow
 plotly
 streamlit-option-menu
+streamlit-extras
