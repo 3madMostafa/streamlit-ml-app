@@ -4,7 +4,7 @@ import Home, Filtering, Analysis, Prediction, ML_Flow
 from PIL import Image
 
 # Set up the Streamlit page configuration
-st.set_page_config(page_title='Final Retail Sales Forecast', layout='wide')
+st.set_page_config(page_title='Retail Sales Forecasting', layout='wide')
 
 # Define the multiapp class
 class MultiApp:
@@ -17,7 +17,7 @@ class MultiApp:
     def run(self):
         # Sidebar menu to switch between pages
         with st.sidebar:
-            app_choice = option_menu('Final Retail Sales Forecast', 
+            app_choice = option_menu('Retail Sales Forecasting', 
                                      ["Home", "Data Filtering", "Data Analysis", "Data Prediction", "MLflow"], 
                                      icons=['house', 'search', "reception-4", "dice-5-fill", "clipboard-data"], 
                                      menu_icon='cash-coin', default_index=0, orientation="vertical",
